@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { useLanguage } from "../../context/LanguageContext";
 import Button from "../common/Button";
 
 function formatPrice(amount) {
@@ -10,6 +9,10 @@ function formatPrice(amount) {
 
 export default function ProductCard({
   id,
+  name,          // ✨ Direct props se data liya
+  desc,          // ✨ Direct props se data liya
+  badge,         // ✨ Direct props se data liya
+  imageLabel,    // ✨ Direct props se data liya
   price,
   detailPath,
   unitPrice,
@@ -21,27 +24,19 @@ export default function ProductCard({
   discountPercentage = 0,
 }) {
   const { addToCart, openCart } = useCart();
-  const { t } = useLanguage();
   const [selectedKg] = useState(kgOptions[0] ?? 1);
   const [addedFeedback, setAddedFeedback] = useState(false);
 
-  const itemCopy = t(`products.items.${id}`);
-  
-  const name = itemCopy.name;
-  const desc = itemCopy.desc;
-  const badge = available ? itemCopy.badge : t("products.comingSoon");
-  const imageLabel = itemCopy.imageLabel;
+  // Status badge dynamic text set karne ke liye
+  const currentBadge = available ? (badge || "Best Seller") : "Coming Soon";
 
-  // 🟢 NEW GLOBAL LOGIC: Yeh har unit par kaam karegi (kg, unit, liter, crate)
+  // Global price logic
   const hasDiscount = discountPercentage > 0;
   const isKgProduct = unitType === "kg";
   
-  // Base Price hamesha number wale 'unitPrice' se calculate hogi. 
-  // Agar kg wala product hai toh select kiye gaye weight se multiply hoga, nahi toh 1 se multiply hoga (jaise eggs, milk, chicken)
   const multiplier = isKgProduct ? selectedKg : 1;
   const basePrice = unitPrice * multiplier;
   
-  // Final discounted price calculation
   const finalPrice = hasDiscount 
     ? basePrice - (basePrice * discountPercentage) / 100 
     : basePrice;
@@ -75,7 +70,7 @@ export default function ProductCard({
         disabled={!available}
         className={addedFeedback ? "product-card__add-btn--added" : ""}
       >
-        {addedFeedback ? t("products.added") : t("products.addToCart")}
+        {addedFeedback ? "✓ Added!" : "Add to Cart"}
       </Button>
     </div>
   );
@@ -85,14 +80,13 @@ export default function ProductCard({
       <span
         className={`product-card__badge${!available ? " product-card__badge--unavailable" : ""}`}
       >
-        {badge}
+        {currentBadge}
       </span>
       <span className="product-card__emoji">{emoji}</span>
-      <span className="product-card__image-label">{imageLabel}</span>
+      <span className="product-card__image-label">{imageLabel || name}</span>
     </div>
   );
 
-  // 🟢 DYNAMIC DISPLAY BLOCK: Pura price layout bina error ke dunya ke har unit par fit baithega
   const bodyBlock = (
     <>
       <h3 className="product-card__name">{name}</h3>
@@ -101,21 +95,17 @@ export default function ProductCard({
       <div className="product-card__price-wrapper" style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", margin: "6px 0" }}>
         {hasDiscount ? (
           <>
-            {/* New Discounted Price */}
             <p className="product-card__price" style={{ margin: 0, fontWeight: "bold" }}>
               {isKgProduct ? `${formatPrice(finalPrice)} (${selectedKg} ${unit})` : `${formatPrice(finalPrice)} / ${unit}`}
             </p>
-            {/* Old Price (Crossed out) */}
             <span className="product-card__old-price" style={{ textDecoration: "line-through", color: "#888", fontSize: "0.85rem" }}>
               {isKgProduct ? formatPrice(basePrice) : `${formatPrice(unitPrice)} / ${unit}`}
             </span>
-            {/* Discount Percentage Tag */}
             <span className="product-card__discount-badge" style={{ backgroundColor: "#e11d48", color: "#fff", fontSize: "0.75rem", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
               {discountPercentage}% OFF
             </span>
           </>
         ) : (
-          /* Normal Price if no discount */
           <p className="product-card__price" style={{ margin: 0 }}>
             {isKgProduct ? `${formatPrice(basePrice)} (${selectedKg} ${unit})` : `${formatPrice(unitPrice)} / ${unit}`}
           </p>
@@ -134,7 +124,7 @@ export default function ProductCard({
           <div className="product-card__body product-card__body--linked">
             {bodyBlock}
             <span className="product-card__view-detail">
-              {available ? t("products.viewDetails") : t("products.comingSoon")}
+              {available ? "View Details →" : "Coming Soon"}
             </span>
           </div>
         </Link>

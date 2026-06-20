@@ -5,11 +5,8 @@ import WhatsAppFloat from "../components/common/WhatsAppFloat";
 import CartContent from "../components/cart/CartContent";
 import SectionTitle from "../components/common/SectionTitle";
 import Breadcrumbs from "../components/common/Breadcrumbs";
-import { useLanguage } from "../context/LanguageContext";
 
 export default function CartPage() {
-  const { t } = useLanguage();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -22,15 +19,15 @@ export default function CartPage() {
         <div className="container">
           <Breadcrumbs
             items={[
-              { label: t("cart.breadcrumbHome"), to: "/" },
-              { label: t("cart.breadcrumbCart"), to: "/cart" },
+              { label: "Home", to: "/" },
+              { label: "Your Cart", to: "/cart" },
             ]}
           />
 
           <SectionTitle
-            label={t("cart.label")}
-            title={t("cart.title")}
-            desc={t("cart.desc")}
+            label="Order Process"
+            title="Review Your Cart"
+            desc="Please double check your wholesale products and quantities before submitting your details to database."
           />
 
           <div className="cart-page__panel">

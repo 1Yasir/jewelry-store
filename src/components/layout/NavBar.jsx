@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { navLinks } from "../../data/siteData";
 import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext";
-import { useLanguage } from "../../context/LanguageContext";
 
 const SECTION_IDS = ["home", "about", "products", "contact"];
 
@@ -13,7 +12,6 @@ export default function NavBar() {
   const [activeSection, setActiveSection] = useState("home");
   const { itemCount } = useCart();
   const { isDark, toggleTheme } = useTheme();
-  const { lang, setLang, t, languages } = useLanguage();
   const location = useLocation();
 
   useEffect(() => {
@@ -81,8 +79,8 @@ export default function NavBar() {
     const sectionId = href.replace("/#", "");
     
     if (location.pathname === "/") {
-      e.preventDefault(); // Browser refresh rokay ga
-      window.history.pushState(null, null, href); // URL update kare ga bina refresh ke
+      e.preventDefault(); 
+      window.history.pushState(null, null, href); 
       const el = document.getElementById(sectionId);
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
@@ -95,8 +93,8 @@ export default function NavBar() {
     <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="container nav__inner">
         <Link to="/" className="nav__brand">
-          <span className="nav__brand-icon">🐔</span>
-          DV
+          <span className="nav__brand-icon">💎</span> {/* ✨ Chicken icon ko badal kar jewelry ke liye Diamond kar diya */}
+          AB WHOLESALE
         </Link>
 
         <div className={`nav__links ${menuOpen ? "nav__links--open" : ""}`}>
@@ -108,7 +106,7 @@ export default function NavBar() {
                 className={`nav__link nav__link--cart${isLinkActive(href, true) ? " nav__link--active" : ""}`}
                 onClick={() => setMenuOpen(false)}
               >
-                {t(`nav.${key}`)}
+                {key.toUpperCase()} {/* Language key ki jagah direct English naam */}
                 {itemCount > 0 && (
                   <span className="nav__cart-badge nav__cart-badge--inline">
                     {itemCount}
@@ -116,38 +114,26 @@ export default function NavBar() {
                 )}
               </Link>
             ) : (
-              /* 🟢 FIXED: <a> tag ko <Link> se badal diya aur handleSectionClick attach kar diya */
               <Link
                 key={key}
                 to={href}
                 className={`nav__link${isLinkActive(href, false) ? " nav__link--active" : ""}`}
                 onClick={(e) => handleSectionClick(e, href)}
               >
-                {t(`nav.${key}`)}
+                {key.toUpperCase()}
               </Link>
             )
           )}
         </div>
 
         <div className="nav__controls">
-          <select
-            className="nav__lang-select bg-white text-slate-800 dark:bg-slate-800 dark:text-white border border-slate-300 dark:border-slate-600"
-            value={lang}
-            onChange={(e) => setLang(e.target.value)}
-            aria-label="Select language"
-          >
-            {languages.map(({ code, label }) => (
-              <option key={code} value={code} className="bg-white text-slate-800 dark:bg-slate-800 dark:text-white border border-slate-300 dark:border-slate-600">
-                {label}
-              </option>
-            ))}
-          </select>
+          {/* ❌ Language Select Dropdown yahan se bilkul remove kar diya hai */}
 
           <button
             type="button"
             className="nav__theme-btn"
             onClick={toggleTheme}
-            aria-label={isDark ? t("theme.toLight") : t("theme.toDark")}
+            aria-label="Toggle Theme"
           >
             {isDark ? (
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">

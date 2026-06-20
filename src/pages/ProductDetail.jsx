@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { collection, onSnapshot, query, where } from "firebase/firestore"; // 🟢 FIXED: Firestore methods import kiye
-import { db } from "../firebase"; // 🟢 FIXED: Firebase config import kiya
+import { collection, onSnapshot, query, where } from "firebase/firestore"; 
+import { db } from "../firebase"; 
 import NavBar from "../components/layout/NavBar";
 import Footer from "../components/layout/Footer";
 import CartFab from "../components/cart/CartFab";
@@ -9,16 +9,13 @@ import Breadcrumbs from "../components/common/Breadcrumbs";
 import Button from "../components/common/Button";
 import { contactInfo, products } from "../data/siteData";
 import { useCart } from "../context/CartContext";
-import { useLanguage } from "../context/LanguageContext";
 
 export default function ProductDetail() {
   const { productId } = useParams();
   const product = products.find((p) => p.id === productId);
   const { addToCart, openCart } = useCart();
-  const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   
-  // 🟢 FIXED: Hardcoded reviews ko khali state se badla aur loading lagaya
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
 
@@ -26,7 +23,6 @@ export default function ProductDetail() {
     window.scrollTo(0, 0);
   }, [productId]);
 
-  // 🟢 FIXED: Database se live feedbacks load karne ke liye useEffect lagaya
   useEffect(() => {
     const q = query(collection(db, "feedbacks"), where("approved", "==", true));
     
@@ -37,7 +33,7 @@ export default function ProductDetail() {
           id: doc.id,
           name: doc.data().name,
           rating: doc.data().rating,
-          comment: doc.data().review, // Humare form mein name 'review' tha, yahan mapping de di
+          comment: doc.data().review, 
         }));
         setReviews(fetchedReviews);
         setLoadingReviews(false);
@@ -187,7 +183,6 @@ export default function ProductDetail() {
             Customer Reviews <span>/ Khareedar ki Raaye</span>
           </h2>
           <div className="product-detail__reviews-list">
-            {/* 🟢 FIXED: Loading aur Empty state lagayi database logic ke mutabiq */}
             {loadingReviews ? (
               <p className="feedback__status">Loading database reviews...</p>
             ) : reviews.length === 0 ? (
@@ -208,17 +203,6 @@ export default function ProductDetail() {
           </div>
         </div>
       </section>
-
-      {/* <section className="section product-detail__section">
-        <div className="container">
-          <h2 className="product-detail__section-title">
-            Product Details <span>/ Tafseel</span>
-          </h2>
-          <p className="product-detail__section-desc">
-            Learn more about our premium quality products and why customers trust DogarVision.
-          </p>
-        </div>
-      </section> */}
 
       <section className="product-detail__cta">
         <div className="container product-detail__cta-inner">

@@ -1,15 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"; 
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBobUZUrjPa2yAUwbm8KLFkiGKY80SR2jg",
-  authDomain: "poultry-form-7425b.firebaseapp.com",
-  projectId: "poultry-form-7425b",
-  storageBucket: "poultry-form-7425b.firebasestorage.app",
-  messagingSenderId: "101705174558",
-  appId: "1:101705174558:web:b8fb2402aaa84d2d99a80f",
-  measurementId: "G-PQSN4NP300",
+  apiKey: "AIzaSyCzQzgtfpfQrf_r-FzHZ_fPHPfAbpMxRoM",
+  authDomain: "jewelry-store-770bf.firebaseapp.com",
+  projectId: "jewelry-store-770bf",
+  storageBucket: "jewelry-store-770bf.firebasestorage.app",
+  messagingSenderId: "674672038628",
+  appId: "1:674672038628:web:7281c8691bffbebf00d2f1"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

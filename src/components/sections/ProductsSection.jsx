@@ -1,12 +1,10 @@
 import { useMemo, useState } from "react";
 import { products, productFilters, getSortedProducts } from "../../data/siteData";
-import { useLanguage } from "../../context/LanguageContext";
 import SectionTitle from "../common/SectionTitle";
 import ProductCard from "./ProductCard";
 
 export default function ProductsSection() {
   const [activeFilter, setActiveFilter] = useState("all");
-  const { t } = useLanguage();
 
   const filtered = useMemo(() => {
     const list =
@@ -16,24 +14,25 @@ export default function ProductsSection() {
     return getSortedProducts(list);
   }, [activeFilter]);
 
-
   return (
     <section id="products" className="section">
       <div className="container">
+        {/* ✨ t() ko hata kar simple jewelry static text daal diya */}
         <SectionTitle
-          label={t("products.label")}
-          title={t("products.title")}
-          desc={t("products.desc")}
+          label="Our Collection"
+          title="Premium Wholesale Jewelry"
+          desc="Browse our premium rings, necklaces, and bangles. Available for wholesale and custom retail orders with competitive pricing."
         />
 
         <div className="products__filters">
-          {productFilters.map(({ id }) => (
+          {/* ✨ t() translation ko hata kar direct filter.label se naam uthaya jo siteData.js mein diya hai */}
+          {productFilters.map(({ id, label }) => (
             <button
               key={id}
               className={`filter-btn ${activeFilter === id ? "filter-btn--active" : ""}`}
               onClick={() => setActiveFilter(id)}
             >
-              {t(`products.filters.${id}`)}
+              {label}
             </button>
           ))}
         </div>

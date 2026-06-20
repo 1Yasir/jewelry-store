@@ -1,57 +1,47 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { products } from "../../data/siteData"; 
-import { heroSlideGroups } from "../../data/heroSlides";
 import { useCart } from "../../context/CartContext";
-import { useLanguage } from "../../context/LanguageContext";
 import Button from "../common/Button";
 
 const INTERVAL_MS = 3000;
 
 export default function HeroSlider() {
-  const { addToCart } = useCart();
-  const { t, lang } = useLanguage(); 
+  const { addToCart, openCart } = useCart();
 
-  const isRTL = lang === "ur";
-
+  // ✨ Static Jewelry Slides Data jo siteData ke active products se directly link hota hai
   const slides = useMemo(() => {
-    return heroSlideGroups
-      .map((group) => {
-        const availableProduct = products.find(
-          (p) => group.categories.includes(p.category) && p.available && p.stockCount > 0
-        );
+    const defaultSlides = [
+      {
+        id: "gold-ring",
+        category: "rings",
+        badge: "✨ Premium Collection",
+        title: "Crafted with Perfection",
+        highlight: "Gold Rings",
+        subtitle: "Exquisite 22K gold rings perfect for wholesale and special retail orders.",
+        theme: "hero-slider__slide--gold",
+        emoji: "💍"
+      },
+      {
+        id: "diamond-necklace",
+        category: "necklaces",
+        badge: "💎 Luxury Wholesale",
+        title: "Elegant Design Set",
+        highlight: "Diamond Choker",
+        subtitle: "Stunning custom designs available for bulk wholesale orders with special discount packages.",
+        theme: "hero-slider__slide--diamond",
+        emoji: "👑"
+      }
+    ];
 
-        if (!availableProduct) return null;
-
-        const copy = t(`hero.slides.${group.translationKey}`);
-
-        const defaultContent = {
-          achar: {
-            badge: "100% Homemade",
-            title: "Traditional Homemade",
-            highlight: "Achar",
-            subtitle: "Authentic taste made with organic oils and handpicked spices."
-          },
-          poultry: {
-            badge: "Farm Fresh",
-            title: "Fresh & Organic",
-            highlight: "Poultry Products",
-            subtitle: "High-quality chicken and organic eggs direct from our farm."
-          }
-        };
-
-        const fallback = defaultContent[group.id] || defaultContent["poultry"];
-
-        return {
-          ...group,
-          badge: copy?.badge || fallback.badge,
-          title: copy?.title || fallback.title,
-          highlight: copy?.highlight || fallback.highlight,
-          subtitle: copy?.subtitle || fallback.subtitle,
-          product: availableProduct,
-        };
-      })
-      .filter((slide) => slide !== null); 
-  }, [t]);
+    return defaultSlides.map(slide => {
+      const activeProd = products.find(p => p.id === slide.id && p.available);
+      if (!activeProd) return null;
+      return {
+        ...slide,
+        product: activeProd
+      };
+    }).filter(s => s !== null);
+  }, []);
 
   const slideCount = slides.length;
   const extendedSlides = slideCount > 1 ? [...slides, slides[0]] : slides;
@@ -64,7 +54,6 @@ export default function HeroSlider() {
   );
 
   const activeIndex = slideCount > 0 ? trackIndex % slideCount : 0;
-  const isAcharActive = slides[activeIndex]?.id === "achar";
 
   useEffect(() => {
     setTrackIndex(0);
@@ -147,15 +136,15 @@ export default function HeroSlider() {
     const product = currentSlide.product;
     if (!product || !product.available || product.stockCount === 0) return;
     
-    const quantity = product.unitType === "kg" ? (product.kgOptions?.[0] ?? 0.5) : 1;
-    addToCart(product, quantity);
+    addToCart(product, 1);
+    openCart();
   };
 
   if (slideCount === 0) {
     return (
       <section id="home" className="hero-slider" style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f9f9f9" }}>
         <div className="container" style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ color: "#666", fontSize: "1.2rem" }}>Loading Fresh Products...</p>
+          <p style={{ color: "#666", fontSize: "1.2rem" }}>Loading Premium Collection...</p>
         </div>
       </section>
     );
@@ -166,7 +155,7 @@ export default function HeroSlider() {
   return (
     <section
       id="home"
-      className={`hero-slider ${isAcharActive ? "hero-slider--achar-active" : ""}`}
+      className="hero-slider"
       aria-label="Featured banners"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -178,7 +167,6 @@ export default function HeroSlider() {
           onTransitionEnd={handleTransitionEnd}
         >
           {extendedSlides.map((slide, index) => {
-            // 🟢 AUTOMATIC DISCOUNT CHECK: Slide ke linked product se direct data check ho raha hai
             const productDiscount = slide.product?.discountPercentage ?? 0;
             const hasDiscount = productDiscount > 0;
 
@@ -199,26 +187,22 @@ export default function HeroSlider() {
                     </h1>
                     <p className="hero-slider__subtitle">{slide.subtitle}</p>
                     
-                    {/* Actions container built with flex layout to handle elements in one row */}
                     <div className="hero-slider__actions" style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "10px", flexWrap: "wrap" }}>
                       <Button
                         type="button"
                         variant="primary"
                         onClick={() => handleOrderNow(slide)}
                       >
-                        {t("hero.orderNow") || "Order Now"}
+                        Order Now
                       </Button>
-
                     </div>
                   </div>
                   <div className="hero-slider__visual" aria-hidden="true">
                     {hasDiscount && (
-                        <span 
-                          className="hero-slider__discount-tag" 
-                         >
-                          🔥 {productDiscount}% OFF
-                        </span>
-                      )}
+                      <span className="hero-slider__discount-tag">
+                        🔥 {productDiscount}% OFF
+                      </span>
+                    )}
                     <span className="hero-slider__emoji">{slide.emoji}</span>
                   </div>
                 </div>
