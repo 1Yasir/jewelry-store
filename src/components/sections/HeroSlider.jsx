@@ -3,44 +3,25 @@ import { products } from "../../data/siteData";
 import { useCart } from "../../context/CartContext";
 import Button from "../common/Button";
 
-const INTERVAL_MS = 3000;
+const INTERVAL_MS = 4000;
 
 export default function HeroSlider() {
   const { addToCart, openCart } = useCart();
 
-  // ✨ Static Jewelry Slides Data jo siteData ke active products se directly link hota hai
+  // 🟢 Dynamic Filter: Sirf wahi products ayenge jahan showInSlider true hai aur stock/available hain
   const slides = useMemo(() => {
-    const defaultSlides = [
-      {
-        id: "gold-ring",
-        category: "rings",
-        badge: "✨ Premium Collection",
-        title: "Crafted with Perfection",
-        highlight: "Gold Rings",
-        subtitle: "Exquisite 22K gold rings perfect for wholesale and special retail orders.",
-        theme: "hero-slider__slide--gold",
-        emoji: "💍"
-      },
-      {
-        id: "diamond-necklace",
-        category: "necklaces",
-        badge: "💎 Luxury Wholesale",
-        title: "Elegant Design Set",
-        highlight: "Diamond Choker",
-        subtitle: "Stunning custom designs available for bulk wholesale orders with special discount packages.",
-        theme: "hero-slider__slide--diamond",
-        emoji: "👑"
-      }
-    ];
-
-    return defaultSlides.map(slide => {
-      const activeProd = products.find(p => p.id === slide.id && p.available);
-      if (!activeProd) return null;
-      return {
-        ...slide,
-        product: activeProd
-      };
-    }).filter(s => s !== null);
+    return products
+      .filter((p) => p.showInSlider && p.available)
+      .map((product) => ({
+        id: product.id,
+        badge: product.badge || "✨ Premium",
+        title: product.name.split(" ").slice(0, 2).join(" "), // Pehle 2 words title ke liye
+        highlight: product.name.split(" ").slice(2).join(" "), // Baaki words highlight styling ke liye
+        subtitle: product.desc.substring(0, 120) + "...", // Description short kar ke subtitle banaya
+        theme: "hero-slider__slide--dynamic",
+        imageUrl: product.imageUrl, // Asli image use hogi
+        product: product
+      }));
   }, []);
 
   const slideCount = slides.length;
@@ -132,22 +113,17 @@ export default function HeroSlider() {
     setTrackIndex(index);
   };
 
-  const handleOrderNow = (currentSlide) => {
+  const handleOrderAction = (currentSlide) => {
     const product = currentSlide.product;
-    if (!product || !product.available || product.stockCount === 0) return;
-    
-    addToCart(product, 1);
-    openCart();
+    if (product && product.available && product.stockCount > 0) {
+      addToCart(product, 1);
+      openCart();
+    }
   };
 
+  // Agar aap ne kisi product par true nahi kiya, to slider hidden rahega mesh kharab nahi hoga
   if (slideCount === 0) {
-    return (
-      <section id="home" className="hero-slider" style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f9f9f9" }}>
-        <div className="container" style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ color: "#666", fontSize: "1.2rem" }}>Loading Premium Collection...</p>
-        </div>
-      </section>
-    );
+    return null; 
   }
 
   const translateValue = -(trackIndex * 100);
@@ -187,23 +163,31 @@ export default function HeroSlider() {
                     </h1>
                     <p className="hero-slider__subtitle">{slide.subtitle}</p>
                     
-                    <div className="hero-slider__actions" style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "10px", flexWrap: "wrap" }}>
+                    
+                    <div className="hero-slider__actions">
                       <Button
                         type="button"
                         variant="primary"
-                        onClick={() => handleOrderNow(slide)}
+                        onClick={() => handleOrderAction(slide)}
                       >
                         Order Now
                       </Button>
                     </div>
                   </div>
+                  
+                  {/* 🖼️ FIXED: Icon/Emoji removed, ab product ki original image full resolution mein show hogi */}
                   <div className="hero-slider__visual" aria-hidden="true">
                     {hasDiscount && (
                       <span className="hero-slider__discount-tag">
                         🔥 {productDiscount}% OFF
                       </span>
                     )}
-                    <span className="hero-slider__emoji">{slide.emoji}</span>
+                    <img 
+                      src={slide.imageUrl} 
+                      alt={slide.title} 
+                      className="hero-slider__product-img" 
+                      style={{ width: '100%', maxHeight: '400px', objectFit: 'contain', borderRadius: '12px' }}
+                    />
                   </div>
                 </div>
               </article>
@@ -220,7 +204,7 @@ export default function HeroSlider() {
               type="button"
               className={`hero-slider__dot ${index === activeIndex ? "hero-slider__dot--active" : ""}`}
               onClick={() => goToSlide(index)}
-              aria-label={`Go to slide ${index + 1}: ${slide.highlight}`}
+              aria-label={`Go to slide ${index + 1}`}
               aria-current={index === activeIndex ? "true" : undefined}
             />
           ))}

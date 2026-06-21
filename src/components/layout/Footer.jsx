@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"; // 🟢 FIXED: Link aur useLocation import kiya
+import { Link, useLocation } from "react-router-dom"; 
 import { contactInfo, footerLinks } from "../../data/siteData";
 
 export default function Footer() {
@@ -23,11 +23,14 @@ export default function Footer() {
       <div className="container">
         <div className="footer__grid">
           <div>
+            {/* 💎 UPDATED: Poultry emoji aur brand name badal kar HSM Jewellers kar diya */}
             <div className="footer__brand">
-              <span>🐔</span> DogarVision
+              {/* <span>💎</span>  */}
+              HSM Jewellers
             </div>
+            {/* ✨ UPDATED: Jewelry ke mutabiq luxury description add ki */}
             <p className="footer__desc">
-              Providing fresh, healthy, and premium poultry products with the highest biosecurity and hygiene standards.
+              Crafting elegance and timeless beauty. Discover our premium collection of finely crafted rings, earrings, and luxury jewelry tailored for your special moments.
             </p>
           </div>
 
@@ -36,7 +39,6 @@ export default function Footer() {
             <ul className="footer__links">
               {footerLinks.map(({ label, href }) => (
                 <li key={label}>
-                  {/* 🟢 FIXED: <a> tag ko <Link> se badal diya aur smooth scroll lagaya */}
                   <Link 
                     to={href} 
                     className="footer__link"
@@ -59,7 +61,6 @@ export default function Footer() {
             </div>
             <div className="footer__contact-item">
               <span>💬</span>
-              {/* 🟢 TIP: WhatsApp link ko tel: ki jagah href par direct call ya chat par lagaya ja sakta hai */}
               <a href={`https://wa.me/${contactInfo.whatsapp.replace('+', '')}`} target="_blank" rel="noreferrer" className="footer__contact-link">
                 WhatsApp: {contactInfo.whatsapp}
               </a>
@@ -71,9 +72,10 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* 🌟 UPDATED: Bottom text ko jewelry taglines ke sath replace kiya */}
         <div className="footer__bottom">
-          <span>© 2026 DogarVision Poultry Farm. All rights reserved.</span>
-          <span>Fresh · Organic · Trusted</span>
+          <span>© 2026 HSM Jewellers. All rights reserved.</span>
+          <span>Elegant · Timeless · Trusted</span>
         </div>
       </div>
     </footer>

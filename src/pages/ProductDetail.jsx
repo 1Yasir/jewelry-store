@@ -19,6 +19,31 @@ export default function ProductDetail() {
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
 
+  // Multi-images array config fallback
+  const productImages = product?.images && product.images.length > 0 
+    ? product.images 
+    : product?.imageUrl ? [product.imageUrl] : [];
+
+  // Features data fallback
+  const productFeatures = product?.features && product.features.length > 0
+    ? product.features
+    : [
+        "Premium Gold Finish",
+        "Lightweight & Comfortable",
+        "Trendy Minimalist Design",
+        "Suitable for Casual & Formal Wear",
+        "Perfect Gift Choice"
+      ];
+
+  const [activeImage, setActiveImage] = useState("");
+  const [zoomStyle, setZoomStyle] = useState({ transformOrigin: "center center", transform: "scale(1)" });
+
+  useEffect(() => {
+    if (productImages.length > 0) {
+      setActiveImage(productImages[0]);
+    }
+  }, [productId, product]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productId]);
@@ -71,6 +96,20 @@ export default function ProductDetail() {
     openCart();
   };
 
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomStyle({
+      transformOrigin: `${x}% ${y}%`,
+      transform: "scale(1.8)", 
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomStyle({ transformOrigin: "center center", transform: "scale(1)" });
+  };
+
   const isOutOfStock = product.stockCount === 0;
 
   return (
@@ -88,12 +127,29 @@ export default function ProductDetail() {
         </div>
         <div className="container product-detail__hero-inner">
           <span className="product-detail__badge">{product.badge}</span>
+          
           <div className="product-detail__hero-grid">
+            
+            {/* ================= LEFT SIDE: CONTENT DETAILS ================= */}
             <div>
-              <p className="product-detail__label">DogarVision Specialty</p>
+              {/* <p className="product-detail__label">DogarVision Specialty</p> */}
               <h1 className="product-detail__title">{product.name}</h1>
               <p className="product-detail__desc">{product.desc}</p>
               
+              {/* 🟢 Clean Classes applied for Features Box */}
+              <div className="product-detail__features-box">
+                <h4 className="product-detail__features-title">
+                  ⭐ Features
+                </h4>
+                <ul className="product-detail__features-list">
+                  {productFeatures.map((feature, i) => (
+                    <li key={i} className="product-detail__features-item">
+                      <span className="product-detail__features-bullet">•</span> {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               {/* Price Section with Discount */}
               <div className="product-detail__price-section">
                 {product.discountPercentage > 0 && (
@@ -169,9 +225,40 @@ export default function ProductDetail() {
                 </Link>
               </div>
             </div>
-            <div className="product-detail__visual" aria-hidden="true">
-              <span className="product-detail__emoji">{product.emoji}</span>
+
+            {/* ================= RIGHT SIDE: PREMIUM GALLERY & ZOOM ENGINE ================= */}
+            <div className="product-detail__gallery-wrapper">
+              <div 
+                className="product-detail__visual-viewport"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{ ...zoomStyle }}
+              >
+                {activeImage ? (
+                  <img src={activeImage} alt={product.name} />
+                ) : (
+                  <div className="product-detail__emoji-fallback">
+                    {product.emoji || "✨"}
+                  </div>
+                )}
+              </div>
+
+              {productImages.length > 1 && (
+                <div className="product-detail__thumbnails-tray">
+                  {productImages.map((img, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setActiveImage(img)}
+                      className={activeImage === img ? "active-thumb" : ""}
+                    >
+                      <img src={img} alt={`Angle ${index + 1}`} />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
+
           </div>
         </div>
       </header>
@@ -180,7 +267,7 @@ export default function ProductDetail() {
       <section className="section product-detail__reviews">
         <div className="container">
           <h2 className="product-detail__section-title">
-            Customer Reviews <span>/ Khareedar ki Raaye</span>
+            Customer Reviews
           </h2>
           <div className="product-detail__reviews-list">
             {loadingReviews ? (

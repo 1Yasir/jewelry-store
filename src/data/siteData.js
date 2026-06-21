@@ -1,3 +1,9 @@
+// 🟢 FIXED: Apne naye product ki images import kiye
+import hoopsMain from "../assets/products/golden-halo-hoops-1.jpeg";
+import hoopsAngle2 from "../assets/products/golden-halo-hoops-2.jpeg";
+import hoopsAngle3 from "../assets/products/golden-halo-hoops-3.jpeg";
+import hoopsAngle4 from "../assets/products/golden-halo-hoops-4.jpeg";
+
 export const colors = {
   primary: "#D4AF37",       // ✨ Jewelry ke liye Metallic Gold color
   primaryDark: "#AA7C11",   // Dark Gold
@@ -25,72 +31,51 @@ export const features = [
   { key: "delivery", icon: "🚚", title: "Safe Shipping", desc: "Secure and insured delivery across all major commercial areas." },
 ];
 
+// 🟢 FIXED: Baqi products delete kar diye, sirf Golden Halo Hoop Earrings rakha fallback logic ke sath
 export const products = [
-  {
-    id: "gold-ring",
-    category: "rings",
-    name: "Premium Gold Wedding Ring",
-    desc: "Exquisite 22K gold ring crafted with high precision, perfect for retailers and retail orders alike.",
-    price: "Rs. 45,000 / piece",
-    unitPrice: 45000,
-    originalPrice: 45000,
-    unit: "piece",
-    unitType: "unit",
-    badge: "Best Seller",
-    imageLabel: "Gold Ring",
-    emoji: "💍",
-    available: true,
-    stockCount: 10,
-    discountPercentage: 0,
-    detailPath: "/product/gold-ring",
-  },
-  {
-    id: "diamond-necklace",
-    category: "necklaces",
-    name: "Elegant Diamond Choker",
-    desc: "Stunning custom diamond choker necklace set, available for bulk wholesale orders with competitive pricing.",
-    price: "Rs. 120,000 / set",
-    unitPrice: 120000,
-    originalPrice: 120000,
-    unit: "set",
-    unitType: "unit",
-    badge: "Premium",
-    imageLabel: "Diamond Choker",
-    emoji: "💎",
-    available: true,
-    stockCount: 5,
-    discountPercentage: 10,
-    detailPath: "/product/diamond-necklace",
-  },
-  {
-    id: "silver-bangles",
-    category: "bangles",
-    name: "Traditional Silver Bangles",
-    desc: "Pure sterling silver bangles with traditional engravings. Pure texture and fine finish.",
-    price: "Rs. 15,000 / pair",
-    unitPrice: 15000,
-    originalPrice: 15000,
-    unit: "pair",
-    unitType: "unit",
-    badge: "New Launch",
-    imageLabel: "Silver Bangles",
-    emoji: "👑",
-    available: true,
-    stockCount: 25,
-    discountPercentage: 5,
-    detailPath: "/product/silver-bangles",
-  },
+{
+  id: "golden-halo-hoop-earrings",
+  category: "earrings",
+  name: "Golden Halo Hoop Earrings",
+  desc: "Elegant and timeless, these Golden Halo Hoop Earrings are designed to add a touch of sophistication to every outfit. Their sleek circular design and radiant gold finish make them perfect for daily wear as well as special occasions. Lightweight, stylish, and easy to pair with any look, these hoops are a must-have addition to your jewelry collection.",
+  price: "Rs. 500 / pair", 
+  unitPrice: 500,
+  originalPrice: 500,
+  unit: "pair",
+  unitType: "unit",
+  badge: "New Launch",
+  imageLabel: "Halo Hoops",
+  features: [
+    "Premium Gold Finish",
+    "Lightweight & Comfortable",
+    "Trendy Minimalist Design",
+    "Suitable for Casual & Formal Wear",
+    "Perfect Gift Choice"
+  ],
+  imageUrl: hoopsMain, 
+  emoji: "✨", 
+  images: [hoopsMain, hoopsAngle2, hoopsAngle3, hoopsAngle4], 
+  available: true,
+  stockCount: 15,
+  discountPercentage: 10,
+  detailPath: "/product/golden-halo-hoop-earrings",
+  
+  // 🟢 Dynamic Slider Control Flag Added Here
+  showInSlider: true, 
+},
+
+
+ 
 ];
 
 export function getSortedProducts(list = products) {
   return [...list].sort((a, b) => Number(b.available) - Number(a.available));
 }
 
+// Filters mein bhi humne earrings filter rakh diya hai
 export const productFilters = [
   { id: "all", label: "All Items" },
-  { id: "rings", label: "Rings" },
-  { id: "necklaces", label: "Necklaces" },
-  { id: "bangles", label: "Bangles" },
+  { id: "earrings", label: "Earrings" },
 ];
 
 export const contactInfo = {

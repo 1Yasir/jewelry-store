@@ -9,23 +9,27 @@ function formatPrice(amount) {
 
 export default function ProductCard({
   id,
-  name,          // ✨ Direct props se data liya
-  desc,          // ✨ Direct props se data liya
-  badge,         // ✨ Direct props se data liya
-  imageLabel,    // ✨ Direct props se data liya
+  name,          
+  desc,          
+  badge,         
+  imageLabel,    
   price,
   detailPath,
   unitPrice,
   unit,
   unitType,
   kgOptions = [],
-  emoji,
+  emoji,         // ✨ Fallback emoji prop
+  imageUrl,      // 🟢 FIXED: Naya image URL prop liya
   available = true,
   discountPercentage = 0,
 }) {
   const { addToCart, openCart } = useCart();
   const [selectedKg] = useState(kgOptions[0] ?? 1);
   const [addedFeedback, setAddedFeedback] = useState(false);
+  
+  // 🟢 FIXED: Agar image crash ho jaye ya na mile, to handle karne ke liye local state lagayi
+  const [imageFailed, setImageFailed] = useState(false);
 
   // Status badge dynamic text set karne ke liye
   const currentBadge = available ? (badge || "Best Seller") : "Coming Soon";
@@ -47,7 +51,8 @@ export default function ProductCard({
     if (!available) return;
 
     const quantity = isKgProduct ? selectedKg : 1;
-    addToCart({ id, name, emoji, unitPrice, unit, unitType }, quantity);
+    // 🟢 FIXED: Cart Context mein imageUrl bhi pass kar di taake cart list mein photo aaye
+    addToCart({ id, name, emoji, imageUrl: imageFailed ? null : imageUrl, unitPrice, unit, unitType }, quantity);
     openCart();
     setAddedFeedback(true);
     setTimeout(() => setAddedFeedback(false), 1500);
@@ -75,15 +80,33 @@ export default function ProductCard({
     </div>
   );
 
+  // 🟢 FIXED: Image loading fallback logic inject ki
   const imageBlock = (
     <div className="product-card__image">
       <span
         className={`product-card__badge${!available ? " product-card__badge--unavailable" : ""}`}
+        style={{ zIndex: 10 }}
       >
         {currentBadge}
       </span>
-      <span className="product-card__emoji">{emoji}</span>
-      <span className="product-card__image-label">{imageLabel || name}</span>
+
+      {/* Agar imageUrl moujood hai aur crash nahi hui, to asli tasveer dikhao */}
+      {imageUrl && !imageFailed ? (
+        <img
+          src={imageUrl}
+          alt={imageLabel || name}
+          className="product-card__img"
+          onError={() => setImageFailed(true)} // 👈 Agar image path galat ho ya load na ho, to yeh auto par fallback chala dega
+         
+        />
+      ) : (
+        /* Fallback: Agar image nahi mili ya fail ho gayi, to background icon/emoji chalega */
+        <span className="product-card__emoji">
+          {emoji || "✨"}
+        </span>
+      )}
+
+      {imageFailed && <span className="product-card__image-label">{imageLabel || name}</span>}
     </div>
   );
 
@@ -92,7 +115,7 @@ export default function ProductCard({
       <h3 className="product-card__name">{name}</h3>
       <p className="product-card__desc">{desc}</p>
       
-      <div className="product-card__price-wrapper" style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", margin: "6px 0" }}>
+      <div className="product-card__price-wrapper">
         {hasDiscount ? (
           <>
             <p className="product-card__price" style={{ margin: 0, fontWeight: "bold" }}>

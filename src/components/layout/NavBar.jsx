@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navLinks } from "../../data/siteData";
 import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -13,6 +13,7 @@ export default function NavBar() {
   const { itemCount } = useCart();
   const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
+  const navigate = useNavigate(); // 🟢 Navigation tracking ke liye hook add kiya
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -75,28 +76,31 @@ export default function NavBar() {
 
   // Smooth scroll handle for section links
   const handleSectionClick = (e, href) => {
+    e.preventDefault(); 
     setMenuOpen(false);
     const sectionId = href.replace("/#", "");
     
     if (location.pathname === "/") {
-      e.preventDefault(); 
+      // Agar pehle se home par hain, to smoothly scroll karein
       window.history.pushState(null, null, href); 
       const el = document.getElementById(sectionId);
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
       setActiveSection(sectionId);
+    } else {
+      // 🟢 FIXED: Agar kisi aur page (jaise Product Detail) par hain, to pehle home page par le kar jaye sath hash pass kare
+      navigate(`/${href.replace("/", "")}`);
     }
   };
 
   return (
     <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="container nav__inner">
-        <Link to="/" className="nav__brand">
-          <span className="nav__brand-icon">💎</span> {/* ✨ Chicken icon ko badal kar jewelry ke liye Diamond kar diya */}
-          AB WHOLESALE
-        </Link>
-
+      <Link to="/" className="nav__brand">
+  {/* <span className="nav__brand-icon">💎</span> */}
+  HSM 
+</Link>
         <div className={`nav__links ${menuOpen ? "nav__links--open" : ""}`}>
           {navLinks.map(({ key, href, isCart }) =>
             isCart ? (
@@ -106,7 +110,7 @@ export default function NavBar() {
                 className={`nav__link nav__link--cart${isLinkActive(href, true) ? " nav__link--active" : ""}`}
                 onClick={() => setMenuOpen(false)}
               >
-                {key.toUpperCase()} {/* Language key ki jagah direct English naam */}
+                {key.toUpperCase()}
                 {itemCount > 0 && (
                   <span className="nav__cart-badge nav__cart-badge--inline">
                     {itemCount}
@@ -127,8 +131,6 @@ export default function NavBar() {
         </div>
 
         <div className="nav__controls">
-          {/* ❌ Language Select Dropdown yahan se bilkul remove kar diya hai */}
-
           <button
             type="button"
             className="nav__theme-btn"
