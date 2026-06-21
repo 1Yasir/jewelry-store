@@ -138,6 +138,7 @@ export default function CartContent() {
         };
       });
 
+      // 1. Firebase Firestore mein save karein
       await addDoc(collection(db, "orders"), {
         name: checkout.fullName.trim(),
         phone: checkout.phone.trim(),
@@ -147,16 +148,19 @@ export default function CartContent() {
         createdAt: serverTimestamp(),
       });
 
+      // 2. WhatsApp ka Custom Text Formatter chalayein
       const message = buildWhatsAppMessage(items, finalTotalBill, checkout);
       const number = contactInfo.whatsapp.replace(/\D/g, "");
       const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 
+      // 🟢 PEHLE WINDOW OPEN KAREIN (Pop-up blocker bypass)
+      window.open(url, "_blank", "noopener,noreferrer");
+
+      // 🟢 ALERT BAAD MEIN
       alert("Thank you! Your order has been saved successfully. Redirecting you to WhatsApp...");
 
       setCheckout(initialCheckout);
       clearCart();
-
-      window.open(url, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Order error:", error);
       alert(

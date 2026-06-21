@@ -75,10 +75,12 @@ export default function ProductDetail() {
   if (!product) {
     return <Navigate to="/" replace />;
   }
+const whatsappNumber = contactInfo.whatsapp.replace(/\D/g, "");
 
-  const whatsappNumber = contactInfo.whatsapp.replace(/\D/g, "");
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi DogarVision, I want to order ${product.name}.`)}`;
+// ✨ Premium Product Message Format (English)
+const detailProductMessage = `Hello HSM Jewellers! ✨\n\nI am checking out this item on your website:\n📦 *Product:* ${product.name}\n🔢 *Quantity:* ${quantity} ${product.unit || "pair"}\n\nKindly guide me with more details regarding this. Thank you! 🙏`;
 
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(detailProductMessage)}`;
   const discountedPrice = product.discountPercentage > 0
     ? product.originalPrice * (1 - product.discountPercentage / 100)
     : product.originalPrice;

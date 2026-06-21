@@ -2,7 +2,12 @@ import { contactInfo } from "../../data/siteData";
 
 export default function WhatsAppFloat() {
   const number = contactInfo.whatsapp.replace(/\D/g, "");
-  const url = `https://wa.me/${number}`;
+  
+  // 📝 Professional Welcome Message Text
+  const welcomeMessage = "Assalam-o-Alaikum HSM Jewellers!";
+
+  // URL ke sath text attach kar diya
+  const url = `https://wa.me/${number}?text=${encodeURIComponent(welcomeMessage)}`;
 
   return (
     <a
