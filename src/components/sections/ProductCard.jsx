@@ -19,19 +19,23 @@ export default function ProductCard({
   unit,
   unitType,
   kgOptions = [],
-  emoji,         // ✨ Fallback emoji prop
-  imageUrl,      // 🟢 FIXED: Naya image URL prop liya
+  emoji,        
+  imageUrl,      
+  images = [],   
+  featuredImageIndex = 0, 
   available = true,
   discountPercentage = 0,
 }) {
   const { addToCart, openCart } = useCart();
   const [selectedKg] = useState(kgOptions[0] ?? 1);
   const [addedFeedback, setAddedFeedback] = useState(false);
-  
-  // 🟢 FIXED: Agar image crash ho jaye ya na mile, to handle karne ke liye local state lagayi
   const [imageFailed, setImageFailed] = useState(false);
 
-  // Status badge dynamic text set karne ke liye
+  // 🟢 SMART IMAGE LOGIC: Agar images array mojood hai to featured index uthao, nahi to single imageUrl par jao
+  const displayImage = images && images.length > 0 
+    ? images[featuredImageIndex] 
+    : imageUrl;
+
   const currentBadge = available ? (badge || "Best Seller") : "Coming Soon";
 
   // Global price logic
@@ -51,8 +55,7 @@ export default function ProductCard({
     if (!available) return;
 
     const quantity = isKgProduct ? selectedKg : 1;
-    // 🟢 FIXED: Cart Context mein imageUrl bhi pass kar di taake cart list mein photo aaye
-    addToCart({ id, name, emoji, imageUrl: imageFailed ? null : imageUrl, unitPrice, unit, unitType }, quantity);
+    addToCart({ id, name, emoji, imageUrl: imageFailed ? null : displayImage, unitPrice, unit, unitType }, quantity);
     openCart();
     setAddedFeedback(true);
     setTimeout(() => setAddedFeedback(false), 1500);
@@ -80,27 +83,23 @@ export default function ProductCard({
     </div>
   );
 
-  // 🟢 FIXED: Image loading fallback logic inject ki
   const imageBlock = (
     <div className="product-card__image">
       <span
         className={`product-card__badge${!available ? " product-card__badge--unavailable" : ""}`}
         style={{ zIndex: 10 }}
       >
-        {currentBadge}
+         {discountPercentage}% OFF
       </span>
 
-      {/* Agar imageUrl moujood hai aur crash nahi hui, to asli tasveer dikhao */}
-      {imageUrl && !imageFailed ? (
+      {displayImage && !imageFailed ? (
         <img
-          src={imageUrl}
+          src={displayImage}
           alt={imageLabel || name}
           className="product-card__img"
-          onError={() => setImageFailed(true)} // 👈 Agar image path galat ho ya load na ho, to yeh auto par fallback chala dega
-         
+          onError={() => setImageFailed(true)} 
         />
       ) : (
-        /* Fallback: Agar image nahi mili ya fail ho gayi, to background icon/emoji chalega */
         <span className="product-card__emoji">
           {emoji || "✨"}
         </span>
@@ -113,24 +112,20 @@ export default function ProductCard({
   const bodyBlock = (
     <>
       <h3 className="product-card__name">{name}</h3>
-      <p className="product-card__desc">{desc}</p>
       
       <div className="product-card__price-wrapper">
         {hasDiscount ? (
           <>
             <p className="product-card__price" style={{ margin: 0, fontWeight: "bold" }}>
-              {isKgProduct ? `${formatPrice(finalPrice)} (${selectedKg} ${unit})` : `${formatPrice(finalPrice)} / ${unit}`}
+              {isKgProduct ? `${formatPrice(finalPrice)} (${selectedKg} ${unit})` : `${formatPrice(finalPrice)}`}
             </p>
             <span className="product-card__old-price" style={{ textDecoration: "line-through", color: "#888", fontSize: "0.85rem" }}>
-              {isKgProduct ? formatPrice(basePrice) : `${formatPrice(unitPrice)} / ${unit}`}
-            </span>
-            <span className="product-card__discount-badge" style={{ backgroundColor: "#e11d48", color: "#fff", fontSize: "0.75rem", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
-              {discountPercentage}% OFF
+              {isKgProduct ? formatPrice(basePrice) : `${formatPrice(unitPrice)}`}
             </span>
           </>
         ) : (
           <p className="product-card__price" style={{ margin: 0 }}>
-            {isKgProduct ? `${formatPrice(basePrice)} (${selectedKg} ${unit})` : `${formatPrice(unitPrice)} / ${unit}`}
+            {isKgProduct ? `${formatPrice(basePrice)} (${selectedKg} ${unit})` : `${formatPrice(unitPrice)}`}
           </p>
         )}
       </div>
@@ -151,17 +146,17 @@ export default function ProductCard({
             </span>
           </div>
         </Link>
-        <div className="product-card__footer">{cartControls}</div>
+        {/* <div className="product-card__footer">{cartControls}</div> */}
       </article>
     );
   }
 
   return (
     <div className={cardClass}>
-      {imageBlock}
+      {/* {imageBlock} */}
       <div className="product-card__body">
         {bodyBlock}
-        {cartControls}
+        <div className="product-card__footer">{cartControls}</div>
       </div>
     </div>
   );

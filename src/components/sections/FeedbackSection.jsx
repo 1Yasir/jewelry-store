@@ -161,7 +161,6 @@ export default function FeedbackSection() {
         </div>
 
         <div className="feedback__list">
-          {/* 🟢 FIXED: Title se 'Approved' lafz hata kar direct kar diya */}
           <h3 className="feedback__list-title">Customer Reviews</h3>
           {loading ? (
             <p className="feedback__status">Loading reviews...</p>
