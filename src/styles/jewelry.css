@@ -2428,7 +2428,12 @@ html.dark .product-card__badge--unavailable {
       aspect-ratio: 1 / 1; 
 
   }
-
+.products-grid{
+  gap: 7px;
+}
+.mb-20{
+  margin-bottom: 10px;
+}
   .nav__toggle {
     display: flex;
   }
