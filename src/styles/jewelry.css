@@ -1638,14 +1638,14 @@ html.dark .product-card__badge--unavailable {
   border: 1px solid #e8dcd4;
   border-radius: 10px;
   overflow: hidden;
-  max-width: 200px;
+  max-width: 150px;
 }
 
 .product-detail__quantity-btn {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 30px;
   border: none;
-  background: #fff;
+  /* background: #fff; */
   font-size: 1.25rem;
   font-weight: 600;
   color: #e75480;
@@ -1664,7 +1664,7 @@ html.dark .product-card__badge--unavailable {
 
 .product-detail__quantity-input {
   width: 80px;
-  height: 40px;
+  height: 30px;
   border: none;
   background: #faf8f7;
   font-size: 1rem;
@@ -2823,5 +2823,76 @@ html.dark .feedback {
     max-width: 64px;
     font-size: 0.75rem;
     padding: 0 4px;
+  }
+}
+
+
+/* --- Store Features Banner --- */
+.store-features-banner {
+  width: 100%;
+  background-color: #FAFAFA; /* Soft bg */
+  padding: 30px 15px;
+  border-top: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+  margin: 40px 0;
+}
+
+.store-features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 Columns on Desktop */
+  gap: 20px;
+}
+
+.store-feature-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: #FFFFFF;
+  border: 1px solid #F3E5AB; /* Soft Gold border */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.store-feature-card__icon-wrapper {
+  font-size: 1.8rem;
+  color: #AA7C11; /* Dark Gold Theme Color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.store-feature-card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-feature-card__title {
+  margin: 0 0 4px 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: 0.5px;
+}
+
+.store-feature-card__desc {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+/* --- Responsive (Mobile Friendly) --- */
+@media (max-width: 992px) {
+  .store-features-container {
+    grid-template-columns: repeat(2, 1fr); /* Tablets par 2 columns */
+  }
+}
+
+@media (max-width: 576px) {
+  .store-features-container {
+    grid-template-columns: 1fr; /* Mobile par 1 column */
+    gap: 12px;
   }
 }

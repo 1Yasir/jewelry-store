@@ -10,6 +10,34 @@ import Button from "../components/common/Button";
 import { contactInfo, products } from "../data/siteData";
 import { useCart } from "../context/CartContext";
 
+// 🟢 Feature cards data array
+const storeFeatures = [
+  {
+    id: "free-shipping",
+    icon: "🚚", // Aap chahein to Lucide icons ya SVG bhi use kar sakte hain
+    title: "FREE SHIPPING",
+    desc: "On orders above Rs. 1500"
+  },
+  {
+    id: "premium-quality",
+    icon: "✨",
+    title: "PREMIUM QUALITY",
+    desc: "Finest materials & durable finish"
+  },
+  {
+    id: "easy-returns",
+    icon: "🔄",
+    title: "EASY RETURNS",
+    desc: "7 days easy return & exchange"
+  },
+  {
+    id: "customer-support",
+    icon: "🎧",
+    title: "CUSTOMER SUPPORT",
+    desc: "We're here to help you anytime"
+  }
+];
+
 export default function ProductDetail() {
   const { productId } = useParams();
   const product = products.find((p) => p.id === productId);
@@ -177,6 +205,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(d
                   </span>
                 )}
               </div>
+              
 
               {/* Quantity Controller */}
               <div className="product-detail__quantity-section">
@@ -219,12 +248,12 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(d
                 >
                   {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </Button>
-                <Button href={whatsappUrl} variant="accent">
+                {/* <Button href={whatsappUrl} variant="accent">
                   Order via WhatsApp
                 </Button>
                 <Link to="/" className="btn btn--outline">
                   Back to Home
-                </Link>
+                </Link> */}
               </div>
             </div>
 
@@ -265,6 +294,22 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(d
         </div>
       </header>
 
+      {/* // Features Banner" (Free Shipping, Premium Quality, Easy Returns, Customer Support) */}
+<section className="store-features-banner">
+      <div className="store-features-container">
+        {storeFeatures.map((feature) => (
+          <div key={feature.id} className="store-feature-card">
+            <div className="store-feature-card__icon-wrapper">
+              <span className="store-feature-card__icon">{feature.icon}</span>
+            </div>
+            <div className="store-feature-card__content">
+              <h4 className="store-feature-card__title">{feature.title}</h4>
+              <p className="store-feature-card__desc">{feature.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
       {/* Customer Reviews Section */}
       <section className="section product-detail__reviews">
         <div className="container">
