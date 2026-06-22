@@ -9,19 +9,27 @@ export default function HeroSlider() {
   const { addToCart, openCart } = useCart();
 
   // 🟢 Dynamic Filter: Sirf wahi products ayenge jahan showInSlider true hai aur stock/available hain
+// 🟢 Dynamic Filter: Sirf wahi products ayenge jahan showInSlider true hai aur stock/available hain
   const slides = useMemo(() => {
     return products
       .filter((p) => p.showInSlider && p.available)
-      .map((product) => ({
-        id: product.id,
-        badge: product.badge || "✨ Premium",
-        title: product.name.split(" ").slice(0, 2).join(" "), // Pehle 2 words title ke liye
-        highlight: product.name.split(" ").slice(2).join(" "), // Baaki words highlight styling ke liye
-        subtitle: product.desc.substring(0, 120) + "...", // Description short kar ke subtitle banaya
-        theme: "hero-slider__slide--dynamic",
-        imageUrl: product.imageUrl, // Asli image use hogi
-        product: product
-      }));
+      .map((product) => {
+        // 🎯 Fix: Check karo agar images array aur featuredImageIndex mojood hai, to wahi photo slider par lagao
+        const sliderImage = product.images && product.images.length > 0
+          ? product.images[product.featuredImageIndex ?? 0]
+          : product.imageUrl;
+
+        return {
+          id: product.id,
+          badge: product.badge || "✨ Premium",
+          title: product.name.split(" ").slice(0, 2).join(" "), // Pehle 2 words title ke liye
+          highlight: product.name.split(" ").slice(2).join(" "), // Baaki words highlight styling ke liye
+          subtitle: product.desc.substring(0, 120) + "...", // Description short kar ke subtitle banaya
+          theme: "hero-slider__slide--dynamic",
+          imageUrl: sliderImage, // 🟢 FIXED: Ab slider mein bhi featuredImageIndex wali tasveer hi load hogi!
+          product: product
+        };
+      });
   }, []);
 
   const slideCount = slides.length;
@@ -186,7 +194,6 @@ export default function HeroSlider() {
                       src={slide.imageUrl} 
                       alt={slide.title} 
                       className="hero-slider__product-img" 
-                      style={{ width: '100%', maxHeight: '400px', objectFit: 'contain', borderRadius: '12px' }}
                     />
                   </div>
                 </div>

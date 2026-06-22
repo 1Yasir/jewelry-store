@@ -472,14 +472,27 @@ html.dark .nav__theme-btn {
 }
 
 .hero-slider__visual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 280px;
-  border-radius: 20px;
+  border-radius: 20px; /* 🟢 Ek baar fix kar diya */
   border: 2px solid #e8dcd4;
   box-shadow: 0 20px 60px rgba(45, 35, 32, 0.1);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background-color: #ffffff; 
+}
+
+.hero-slider__product-img {
+   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.hero-slider__visual:hover .hero-slider__product-img {
+  transform: scale(1.3);
 }
 
 .hero-slider__discount-tag {
@@ -2452,10 +2465,13 @@ html.dark .product-card__badge--unavailable {
     font-size: 1rem;
   }
 
-  .features-grid,
-  .products-grid,
-  .feedback-grid {
+  .products-grid {
         grid-template-columns: repeat(2, 1fr);
+
+  }
+  .features-grid,
+  .feedback-grid {
+        grid-template-columns: repeat(1, 1fr);
 
   }
 

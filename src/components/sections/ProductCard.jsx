@@ -83,14 +83,24 @@ export default function ProductCard({
     </div>
   );
 
-  const imageBlock = (
+ const imageBlock = (
     <div className="product-card__image">
-      <span
-        className={`product-card__badge${!available ? " product-card__badge--unavailable" : ""}`}
-        style={{ zIndex: 10 }}
-      >
-         {discountPercentage}% OFF
-      </span>
+      {/* 🎯 FIXED: Badge sirf tabhi dikhega jab discount 0 se zyada ho aur product available ho */}
+      {available && discountPercentage > 0 && (
+        <span
+          className="product-card__badge"
+          style={{ zIndex: 10 }}
+        >
+          {discountPercentage}% OFF
+        </span>
+      )}
+
+      {/* ⚠️ Agar product available na ho, to aap chahein to "Coming Soon" ka badge dikha sakte hain */}
+      {!available && (
+        <span className="product-card__badge product-card__badge--unavailable" style={{ zIndex: 10 }}>
+          Coming Soon
+        </span>
+      )}
 
       {displayImage && !imageFailed ? (
         <img

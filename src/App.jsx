@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import ProductDetail from "./pages/ProductDetail";
 import CartDrawer from "./components/cart/CartDrawer";
-import "./styles/poultry.css";
+import "./styles/jewelry.css";
 
 export default function App() {
   return (

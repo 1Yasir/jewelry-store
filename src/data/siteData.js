@@ -68,6 +68,36 @@ export const products = [
     showInSlider: true, 
     featuredImageIndex: 2, // Card par teesri image (hoopsAngle3) show hogi
   },
+   {
+    id: "celestial-layered-pendant-necklace",
+    category: "necklaces", 
+    name: "Celestial Layered Pendant Necklace",
+    desc: "Elevate your style with our beautifully crafted Celestial Layered Necklace. Featuring delicate layered chains adorned with a charming star, crescent moon, and elegant turquoise-inspired pendant, this necklace blends timeless beauty with modern sophistication. Perfect for everyday wear or special occasions, it adds a graceful touch to any outfit.",
+    price: "Rs. 899 / piece", 
+    unitPrice: 899,
+    originalPrice: 1099,
+    unit: "piece",
+    unitType: "unit",
+    badge: "10% OFF",
+    imageLabel: "Celestial Necklace",
+    features: [
+      "Trendy layered design",
+      "Star & moon charm details",
+      "Elegant turquoise-style centerpiece",
+      "Lightweight and comfortable",
+      "Perfect for daily wear & gifting",
+      "Premium gold-tone finish"
+    ],
+    imageUrl: necklaceMain, 
+    emoji: "✨", 
+    images: [necklaceMain, necklaceAngle2, necklaceAngle3, necklaceAngle4, necklaceAngle5], 
+    available: true,
+    stockCount: 123, 
+    discountPercentage: 0,
+    detailPath: "/product/celestial-layered-pendant-necklace",
+    showInSlider: false, 
+    featuredImageIndex: 3, // Card par pehli photo show hogi
+  },
   {
     id: "celestial-layered-pendant-necklace",
     category: "necklaces", 
@@ -126,7 +156,7 @@ export const products = [
     discountPercentage: 10,
     detailPath: "/product/celestial-layered-pendant-necklace",
     showInSlider: true, 
-    featuredImageIndex: 0, // Card par pehli photo show hogi
+    featuredImageIndex: 1, // Card par pehli photo show hogi
   },
    {
     id: "celestial-layered-pendant-necklace",
@@ -156,6 +186,66 @@ export const products = [
     discountPercentage: 0,
     detailPath: "/product/celestial-layered-pendant-necklace",
     showInSlider: false, 
+    featuredImageIndex: 2, // Card par pehli photo show hogi
+  },
+   {
+    id: "celestial-layered-pendant-necklace",
+    category: "necklaces", 
+    name: "Celestial Layered Pendant Necklace",
+    desc: "Elevate your style with our beautifully crafted Celestial Layered Necklace. Featuring delicate layered chains adorned with a charming star, crescent moon, and elegant turquoise-inspired pendant, this necklace blends timeless beauty with modern sophistication. Perfect for everyday wear or special occasions, it adds a graceful touch to any outfit.",
+    price: "Rs. 899 / piece", 
+    unitPrice: 899,
+    originalPrice: 1099,
+    unit: "piece",
+    unitType: "unit",
+    badge: "10% OFF",
+    imageLabel: "Celestial Necklace",
+    features: [
+      "Trendy layered design",
+      "Star & moon charm details",
+      "Elegant turquoise-style centerpiece",
+      "Lightweight and comfortable",
+      "Perfect for daily wear & gifting",
+      "Premium gold-tone finish"
+    ],
+    imageUrl: necklaceMain, 
+    emoji: "✨", 
+    images: [necklaceMain, necklaceAngle2, necklaceAngle3, necklaceAngle4, necklaceAngle5], 
+    available: true,
+    stockCount: 123, 
+    discountPercentage: 40,
+    detailPath: "/product/celestial-layered-pendant-necklace",
+    showInSlider: false, 
+    featuredImageIndex: 1, // Card par pehli photo show hogi
+  },
+   {
+    id: "celestial-layered-pendant-necklace",
+    category: "necklaces", 
+    name: "Celestial Layered Pendant Necklace",
+    desc: "Elevate your style with our beautifully crafted Celestial Layered Necklace. Featuring delicate layered chains adorned with a charming star, crescent moon, and elegant turquoise-inspired pendant, this necklace blends timeless beauty with modern sophistication. Perfect for everyday wear or special occasions, it adds a graceful touch to any outfit.",
+    price: "Rs. 899 / piece", 
+    unitPrice: 899,
+    originalPrice: 1099,
+    unit: "piece",
+    unitType: "unit",
+    badge: "10% OFF",
+    imageLabel: "Celestial Necklace",
+    features: [
+      "Trendy layered design",
+      "Star & moon charm details",
+      "Elegant turquoise-style centerpiece",
+      "Lightweight and comfortable",
+      "Perfect for daily wear & gifting",
+      "Premium gold-tone finish"
+    ],
+    imageUrl: necklaceMain, 
+    emoji: "✨", 
+    images: [necklaceMain, necklaceAngle2, necklaceAngle3, necklaceAngle4, necklaceAngle5], 
+    available: true,
+    stockCount: 123, 
+    discountPercentage: 5,
+    detailPath: "/product/celestial-layered-pendant-necklace",
+    showInSlider: true, 
     featuredImageIndex: 2, // Card par pehli photo show hogi
   }
 ];
