@@ -1,14 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"; 
 
-// Your web app's Firebase configuration
+// Environment variables se configuration read ho rahi hai
 const firebaseConfig = {
-  apiKey: "AIzaSyCzQzgtfpfQrf_r-FzHZ_fPHPfAbpMxRoM",
-  authDomain: "jewelry-store-770bf.firebaseapp.com",
-  projectId: "jewelry-store-770bf",
-  storageBucket: "jewelry-store-770bf.firebasestorage.app",
-  messagingSenderId: "674672038628",
-  appId: "1:674672038628:web:7281c8691bffbebf00d2f1"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

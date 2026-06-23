@@ -17,7 +17,7 @@ export default function ProductsSection() {
   return (
     <section id="products" className="section">
       <div className="container">
-        {/* ✨ t() ko hata kar simple jewelry static text daal diya */}
+
         <SectionTitle
           label="Our Collection"
           title="Premium Wholesale Jewelry"

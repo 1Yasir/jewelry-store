@@ -9,7 +9,6 @@ export default function HeroSlider() {
   const { addToCart, openCart } = useCart();
 
   // 🟢 Dynamic Filter: Sirf wahi products ayenge jahan showInSlider true hai aur stock/available hain
-// 🟢 Dynamic Filter: Sirf wahi products ayenge jahan showInSlider true hai aur stock/available hain
   const slides = useMemo(() => {
     return products
       .filter((p) => p.showInSlider && p.available)
@@ -22,11 +21,12 @@ export default function HeroSlider() {
         return {
           id: product.id,
           badge: product.badge || "✨ Premium",
-          title: product.name.split(" ").slice(0, 2).join(" "), // Pehle 2 words title ke liye
-          highlight: product.name.split(" ").slice(2).join(" "), // Baaki words highlight styling ke liye
-          subtitle: product.desc.substring(0, 120) + "...", // Description short kar ke subtitle banaya
+          title: product.name ? product.name.split(" ").slice(0, 2).join(" ") : "Featured", 
+          highlight: product.name ? product.name.split(" ").slice(2).join(" ") : "Product", 
+          // 🛑 CRASH FIX HERE: Optional check for description
+          subtitle: product.desc ? (product.desc.substring(0, 120) + "...") : "Premium quality product built for your elegant lifestyle.",
           theme: "hero-slider__slide--dynamic",
-          imageUrl: sliderImage, // 🟢 FIXED: Ab slider mein bhi featuredImageIndex wali tasveer hi load hogi!
+          imageUrl: sliderImage, 
           product: product
         };
       });
@@ -129,7 +129,6 @@ export default function HeroSlider() {
     }
   };
 
-  // Agar aap ne kisi product par true nahi kiya, to slider hidden rahega mesh kharab nahi hoga
   if (slideCount === 0) {
     return null; 
   }
@@ -171,7 +170,6 @@ export default function HeroSlider() {
                     </h1>
                     <p className="hero-slider__subtitle">{slide.subtitle}</p>
                     
-                    
                     <div className="hero-slider__actions">
                       <Button
                         type="button"
@@ -183,7 +181,6 @@ export default function HeroSlider() {
                     </div>
                   </div>
                   
-                  {/* 🖼️ FIXED: Icon/Emoji removed, ab product ki original image full resolution mein show hogi */}
                   <div className="hero-slider__visual" aria-hidden="true">
                     {hasDiscount && (
                       <span className="hero-slider__discount-tag">
