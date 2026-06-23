@@ -48,6 +48,8 @@ export const productFilters = [
   { id: "all", label: "All Items" },
   { id: "earrings", label: "Earrings" },
   { id: "necklaces", label: "Necklaces" },
+  { id: "bangles", label: "Bangles" },
+  { id: "sets", label: "Jewelry Sets" } 
 ];
 
 export const contactInfo = {
