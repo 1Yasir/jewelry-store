@@ -191,6 +191,7 @@ export default function HeroSlider() {
                       src={slide.imageUrl} 
                       alt={slide.title} 
                       className="hero-slider__product-img" 
+                      loading="lazy"
                     />
                   </div>
                 </div>

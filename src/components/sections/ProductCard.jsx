@@ -108,6 +108,9 @@ export default function ProductCard({
           alt={imageLabel || name}
           className="product-card__img"
           onError={() => setImageFailed(true)} 
+          loading="lazy"
+          width= "300"
+          height =  "300"
         />
       ) : (
         <span className="product-card__emoji">
