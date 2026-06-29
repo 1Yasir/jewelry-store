@@ -771,8 +771,8 @@ html.dark .nav__theme-btn {
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 11px;
 }
 
 .product-card {

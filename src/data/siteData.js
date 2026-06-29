@@ -49,8 +49,10 @@ export const productFilters = [
   { id: "earrings", label: "Earrings" },
   { id: "necklaces", label: "Necklaces" },
   { id: "bangles", label: "Bangles" },
+  { id: "rings", label: "Rings" }, // Nayi category add kar di
   { id: "sets", label: "Jewelry Sets" } 
 ];
+
 
 export const contactInfo = {
   phone: "+03324840967",
